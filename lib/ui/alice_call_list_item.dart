@@ -1,7 +1,7 @@
 import 'package:alice/model/alice_http_call.dart';
 import 'package:alice/model/alice_http_response.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Icons;
+import 'package:flutter/material.dart' show Icons, Theme;
 
 class AliceCallListItem extends StatelessWidget {
   final AliceHttpCall call;
@@ -17,9 +17,7 @@ class AliceCallListItem extends StatelessWidget {
       onPressed: () {
         itemClickAction(call);
       },
-      child: DefaultTextStyle(
-        style: CupertinoTheme.of(context).textTheme.textStyle,
-        child: Column(children: [
+      child: Column(children: [
           Container(
             padding: EdgeInsets.all(10),
             child: Row(
@@ -84,7 +82,6 @@ class AliceCallListItem extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 10),
           )
         ]),
-      ),
     );
   }
 

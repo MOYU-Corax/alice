@@ -3,7 +3,7 @@ import 'package:alice/ui/alice_call_details_screen.dart';
 import 'package:alice/core/alice_core.dart';
 import 'package:alice/model/alice_http_call.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Icons, Theme, ThemeData;
+import 'package:flutter/material.dart';
 
 import 'alice_call_list_item.dart';
 import 'alice_stats_screen.dart';
@@ -35,58 +35,31 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
           brightness: widget._aliceCore.brightness,
         ),
       ),
-      child: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          middle: Text("Alice - Calls"),
-          trailing: CupertinoButton(
-            padding: EdgeInsets.zero,
-            minSize: 0,
-            child: Icon(
-              CupertinoIcons.ellipsis,
-              size: 30,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Alice - Calls"),
+          actions: [
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () {
+                Navigator.pop(context);
+                _removeCalls();
+              },
             ),
-            onPressed: () {
-              showCupertinoModalPopup(context: context, builder: _buildMenu);
-            },
-          ),
+            TextButton(
+              child: Text('Stats'),
+              onPressed: () {
+                Navigator.pop(context);
+                _showStatsScreen();
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
         ),
-        child: Builder(
-          builder: (context) {
-            return Container(
-              color: CupertinoDynamicColor.withBrightness(
-                color: CupertinoColors.white,
-                darkColor: CupertinoColors.darkBackgroundGray,
-              ).resolveFrom(context),
-              // color: CupertinoColors.darkBackgroundGray,
-              child: _getCallsList(),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMenu(BuildContext context) {
-    return CupertinoActionSheet(
-      actions: <Widget>[
-        CupertinoActionSheetAction(
-          child: Text('Delete'),
-          onPressed: () {
-            Navigator.pop(context);
-            _removeCalls();
-          },
-        ),
-        CupertinoActionSheetAction(
-          child: Text('Stats'),
-          onPressed: () {
-            Navigator.pop(context);
-            _showStatsScreen();
-          },
-        ),
-      ],
-      cancelButton: CupertinoActionSheetAction(
-        child: Text('Cancel'),
-        onPressed: () => Navigator.pop(context),
+        body: _getCallsList(),
       ),
     );
   }
@@ -123,7 +96,7 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
                       ]),
                 ));
           } else {
-            return CupertinoScrollbar(
+            return Scrollbar(
               child: ListView(
                 children: _getListElements(),
               ),
@@ -143,7 +116,7 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
   void _onListItemClicked(AliceHttpCall call) {
     Navigator.push(
       widget._aliceCore.getContext(),
-      CupertinoPageRoute(
+      MaterialPageRoute(
         builder: (context) => AliceCallDetailsScreen(call, widget._aliceCore),
       ),
     );
@@ -156,7 +129,7 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
   void _showStatsScreen() {
     Navigator.push(
       widget._aliceCore.getContext(),
-      CupertinoPageRoute(
+      MaterialPageRoute(
         builder: (context) => AliceStatsScreen(widget._aliceCore),
       ),
     );

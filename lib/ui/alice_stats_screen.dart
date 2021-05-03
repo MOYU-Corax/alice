@@ -1,6 +1,6 @@
 import 'package:alice/core/alice_core.dart';
 import 'package:alice/model/alice_http_call.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AliceStatsScreen extends StatelessWidget {
   final AliceCore aliceCore;
@@ -11,13 +11,13 @@ class AliceStatsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     int bytesSent = _getBytesSent();
     int bytesReceived = _getBytesReceived();
-    return CupertinoTheme(
-      data: CupertinoThemeData(brightness: aliceCore.brightness),
-      child: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          middle: Text("Alice - Stats"),
+    return Theme(
+      data: ThemeData(brightness: aliceCore.brightness),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Alice - Stats"),
         ),
-        child: SafeArea(
+        body: SafeArea(
           child: Container(
             padding: EdgeInsets.all(10),
             child: SingleChildScrollView(

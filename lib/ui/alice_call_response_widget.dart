@@ -1,5 +1,5 @@
 import 'package:alice/model/alice_http_call.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'alice_base_call_details_widget.dart';
 
@@ -37,7 +37,7 @@ class AliceCallResponseWidget extends AliceBaseCallDetailsWidget {
       }
       return Container(
         padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-        child: CupertinoScrollbar(
+        child: Scrollbar(
           child: ListView(children: rows),
         ),
       );
@@ -46,7 +46,7 @@ class AliceCallResponseWidget extends AliceBaseCallDetailsWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          new CupertinoActivityIndicator(),
+          CircularProgressIndicator(),
           Text("Awaiting response...")
         ],
       ));

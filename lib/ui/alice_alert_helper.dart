@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AliceAlertHelper {
   static void showAlert(BuildContext context, String title, String description,
@@ -8,7 +8,7 @@ class AliceAlertHelper {
       Function secondButtonAction}) {
     List<Widget> actions = List();
     if (firstButtonTitle != null) {
-      actions.add(CupertinoButton(
+      actions.add(TextButton(
         child: Text(firstButtonTitle),
         onPressed: () {
           if (firstButtonAction != null) {
@@ -19,7 +19,7 @@ class AliceAlertHelper {
       ));
     }
     if (secondButtonTitle != null) {
-      actions.add(CupertinoButton(
+      actions.add(TextButton(
         child: Text(secondButtonTitle),
         onPressed: () {
           if (secondButtonAction != null) {
@@ -29,10 +29,10 @@ class AliceAlertHelper {
         },
       ));
     }
-    showCupertinoDialog(
+    showDialog(
         context: context,
         builder: (BuildContext buildContext) {
-          return CupertinoAlertDialog(
+          return AlertDialog(
               title: Text(title), content: Text(description), actions: actions);
         });
   }

@@ -1,6 +1,6 @@
 import 'package:alice/core/alice_core.dart';
 import 'package:alice/model/alice_http_call.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 
 import 'alice_call_error_widger.dart';
@@ -22,6 +22,7 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
     with SingleTickerProviderStateMixin {
   Widget _previousState;
   int currentSegment = 0;
+  PageController _pageController;
 
   @override
   void initState() {
@@ -30,8 +31,8 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTheme(
-        data: CupertinoThemeData(
+    return Theme(
+        data: ThemeData(
           brightness: widget.core.brightness,
         ),
         child: StreamBuilder<AliceHttpCall>(
@@ -39,45 +40,90 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
             initialData: widget.call,
             builder: (context, callSnapshot) {
               if (widget.call.id == callSnapshot.data.id) {
-                _previousState = CupertinoPageScaffold(
-                  navigationBar: CupertinoNavigationBar(
-                    middle: Text('Alice - Details'),
-                    trailing: CupertinoButton(
+                _previousState = Scaffold(
+                  appBar: AppBar(
+                    title: Text('Alice - Details'),
+                    actions: [IconButton(
                       key: Key('share_key'),
                       padding: EdgeInsets.zero,
-                      minSize: 0,
-                      child: Icon(CupertinoIcons.share, size: 26,),
+                      icon: Icon(Icons.share, size: 26,),
                       onPressed: () {
                         Share.share(_getSharableResponseString(),
                             subject: 'Request Details');
                       },
-                    ),
+                    )],
                   ),
-                  child: CupertinoTabScaffold(
-                    tabBar: CupertinoTabBar(
-                      items: [
-                        BottomNavigationBarItem(
-                            icon: Icon(CupertinoIcons.info),
-                            title: Text('Overview')),
-                        BottomNavigationBarItem(
-                            icon: Icon(CupertinoIcons.up_arrow),
-                            title: Text('Request')),
-                        BottomNavigationBarItem(
-                            icon: Icon(CupertinoIcons.down_arrow),
-                            title: Text('Response')),
-                        BottomNavigationBarItem(
-                            icon: Icon(CupertinoIcons.tags),
-                            title: Text('Error')),
-                      ],
-                    ),
-                    tabBuilder: (context, index) {
-                      return _getTabBarViewList()[index];
-                    },
+                  body: PageView(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: _pageController,
+                    children: [
+                      AliceCallOverviewWidget(widget.call),
+                      AliceCallRequestWidget(widget.call),
+                      AliceCallResponseWidget(widget.call),
+                      AliceCallErrorWidget(widget.call),
+                    ],
                   ),
+                  bottomNavigationBar: _buildBottom(context),
                 );
               }
               return _previousState;
             }));
+  }
+
+  static const List<Icon> items = [
+    Icon(Icons.leaderboard, size: 29),
+    Icon(Icons.calendar_today, size: 27),
+    Icon(Icons.home, size: 31),
+    Icon(Icons.navigation, size: 29),
+    Icon(Icons.settings, size: 29)
+  ];
+
+  Widget _buildItem(int idx, Icon item, bool isSelected) {
+    bool isDarkMode = widget.core.brightness == Brightness.dark;
+    final width = MediaQuery.of(context).size.width / 5;
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 377),
+      curve: Curves.fastOutSlowIn,
+      height: 50,
+      width: isSelected ? width : width - 17,
+      decoration: isSelected
+          ? BoxDecoration(
+              color: isDarkMode ? Colors.white12 : Colors.black12,
+              borderRadius: const BorderRadius.all(Radius.circular(50))
+          )
+          : null,
+      child: IconButton(
+        icon: item,
+        splashRadius: width / 3.3,
+        padding: EdgeInsets.only(left: 17, right: 17), 
+        onPressed: () {
+          setState(() {
+            currentSegment = idx;
+            _pageController.animateToPage(
+              idx,
+              duration: Duration(milliseconds: 677),
+              curve: Curves.fastLinearToSlowEaseIn);
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _buildBottom(BuildContext context) {
+    return SafeArea(
+        child: Container(
+          height: 56,
+          padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 8),
+          width: MediaQuery.of(context).size.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: items.map((item) {
+              int itemIndex = items.indexOf(item);
+              return _buildItem(itemIndex, item, currentSegment == itemIndex);
+            }).toList(),
+          ),
+        )
+    );
   }
 
   void onValueChanged(int newValue) {
@@ -88,14 +134,5 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
 
   String _getSharableResponseString() {
     return '${widget.call.getCallLog()}\n\n${widget.call.getCurlCommand()}';
-  }
-
-  List<Widget> _getTabBarViewList() {
-    List<Widget> widgets = List();
-    widgets.add(AliceCallOverviewWidget(widget.call));
-    widgets.add(AliceCallRequestWidget(widget.call));
-    widgets.add(AliceCallResponseWidget(widget.call));
-    widgets.add(AliceCallErrorWidget(widget.call));
-    return widgets;
   }
 }
