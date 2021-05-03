@@ -3,7 +3,6 @@ import 'package:alice/core/alice_chopper_response_interceptor.dart';
 import 'package:alice/core/alice_http_adapter.dart';
 import 'package:http/http.dart' as http;
 import 'package:alice/core/alice_core.dart';
-import 'package:alice/core/alice_dio_interceptor.dart';
 import 'package:alice/core/alice_http_client_adapter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -33,10 +32,6 @@ class Alice {
 
   GlobalKey<NavigatorState> getNavigatorKey() {
     return _navigatorKey;
-  }
-
-  AliceDioInterceptor getDioInterceptor() {
-    return AliceDioInterceptor(_core);
   }
 
   void onHttpClientRequest(HttpClientRequest request, {dynamic body}) {

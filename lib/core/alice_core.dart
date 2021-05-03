@@ -3,14 +3,11 @@ import 'package:alice/ui/alice_calls_list_screen.dart';
 import 'package:alice/model/alice_http_call.dart';
 import 'package:alice/model/alice_http_response.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shake/shake.dart';
 
 class AliceCore {
-  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   GlobalKey<NavigatorState> _navigatorKey;
-  bool _showNotification = false;
   bool _showInspectorOnShake = false;
   bool _isInspectorOpened = false;
   Brightness _brightness = Brightness.light;
@@ -26,10 +23,6 @@ class AliceCore {
     calls = List();
     changesSubject = PublishSubject();
     callUpdateSubject = PublishSubject();
-    _showNotification = showNotification;
-    if (showNotification) {
-      _initializeNotificationsPlugin();
-    }
     _showInspectorOnShake = showInspectorOnShake;
     if (_showInspectorOnShake) {
       shakeDetector = ShakeDetector.autoStart(
@@ -44,22 +37,6 @@ class AliceCore {
     changesSubject.close();
     callUpdateSubject.close();
     shakeDetector?.stopListening();
-  }
-
-  void _initializeNotificationsPlugin() {
-    _flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid =
-        new AndroidInitializationSettings("@mipmap/ic_launcher");
-    var initializationSettingsIOS = new IOSInitializationSettings();
-    var initializationSettings = new InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
-    _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: _onSelectedNotification);
-  }
-
-  Future _onSelectedNotification(String payload) {
-    navigateToCallListScreen();
-    return Future.sync(() {});
   }
 
   void navigateToCallListScreen() {
@@ -88,29 +65,8 @@ class AliceCore {
     }
   }
 
-  void _showLocalNotification() async {
-    var channelId = "Alice";
-    var channelName = "Alice";
-    var channelDescription = "Alice";
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        channelId, channelName, channelDescription,
-        enableVibration: false,
-        importance: Importance.Default,
-        priority: Priority.Default);
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    var platformChannelSpecifics = new NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-
-    await _flutterLocalNotificationsPlugin.show(
-        0, "Alice", "HTTP Requests: ${calls.length}", platformChannelSpecifics,
-        payload: "");
-  }
-
   void addCall(AliceHttpCall call) {
     calls.add(call);
-    if (_showNotification) {
-      _showLocalNotification();
-    }
   }
 
   void addError(AliceHttpError error, int requestId) {

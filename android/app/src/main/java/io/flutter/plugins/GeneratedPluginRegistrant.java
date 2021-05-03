@@ -2,7 +2,6 @@ package io.flutter.plugins;
 
 import io.flutter.plugin.common.PluginRegistry;
 import com.jhomlala.alice.AlicePlugin;
-import com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin;
 import io.flutter.plugins.sensors.SensorsPlugin;
 import io.flutter.plugins.share.SharePlugin;
 
@@ -15,7 +14,6 @@ public final class GeneratedPluginRegistrant {
       return;
     }
     AlicePlugin.registerWith(registry.registrarFor("com.jhomlala.alice.AlicePlugin"));
-    FlutterLocalNotificationsPlugin.registerWith(registry.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"));
     SensorsPlugin.registerWith(registry.registrarFor("io.flutter.plugins.sensors.SensorsPlugin"));
     SharePlugin.registerWith(registry.registrarFor("io.flutter.plugins.share.SharePlugin"));
   }
