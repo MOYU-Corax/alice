@@ -11,9 +11,7 @@ class AliceStatsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     int bytesSent = _getBytesSent();
     int bytesReceived = _getBytesReceived();
-    return Theme(
-      data: ThemeData(brightness: aliceCore.brightness),
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text("Alice - Stats"),
         ),
@@ -49,8 +47,7 @@ class AliceStatsScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   Row _getRow(String label, String value) {

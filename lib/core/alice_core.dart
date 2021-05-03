@@ -1,42 +1,26 @@
 import 'package:alice/model/alice_http_error.dart';
-import 'package:alice/ui/alice_calls_list_screen.dart';
 import 'package:alice/model/alice_http_call.dart';
 import 'package:alice/model/alice_http_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shake/shake.dart';
 
 class AliceCore {
   GlobalKey<NavigatorState> _navigatorKey;
-  bool _showInspectorOnShake = false;
-  bool _isInspectorOpened = false;
-  Brightness _brightness = Brightness.light;
 
   List<AliceHttpCall> calls;
   PublishSubject<int> changesSubject;
   PublishSubject<AliceHttpCall> callUpdateSubject;
-  ShakeDetector shakeDetector;
 
-  AliceCore(GlobalKey<NavigatorState> navigatorKey, bool showNotification,
-      bool showInspectorOnShake, bool darkTheme) {
+  AliceCore(GlobalKey<NavigatorState> navigatorKey) {
     _navigatorKey = navigatorKey;
     calls = List();
     changesSubject = PublishSubject();
     callUpdateSubject = PublishSubject();
-    _showInspectorOnShake = showInspectorOnShake;
-    if (_showInspectorOnShake) {
-      shakeDetector = ShakeDetector.autoStart(
-        onPhoneShake: () => navigateToCallListScreen(),
-        shakeThresholdGravity: 5,
-      );
-    }
-    _brightness = darkTheme ? Brightness.dark : Brightness.light;
   }
 
   dispose() {
     changesSubject.close();
     callUpdateSubject.close();
-    shakeDetector?.stopListening();
   }
 
   void navigateToCallListScreen() {
@@ -45,13 +29,6 @@ class AliceCore {
       print(
           "Cant start Alice HTTP Inspector. Please add NavigatorKey to your application");
       return;
-    }
-    if (!_isInspectorOpened) {
-      _isInspectorOpened = true;
-      Navigator.push(
-        context,
-        CupertinoPageRoute(builder: (context) => AliceCallsListScreen(this)),
-      ).then((onValue) => _isInspectorOpened = false);
     }
   }
 
@@ -116,6 +93,4 @@ class AliceCore {
   void saveHttpRequests(BuildContext context) {
     // AliceSaveHelper.saveCalls(context, calls);
   }
-
-  Brightness get brightness => _brightness;
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:alice/core/alice_chopper_response_interceptor.dart';
 import 'package:alice/core/alice_http_adapter.dart';
 import 'package:http/http.dart' as http;
 import 'package:alice/core/alice_core.dart';
@@ -14,18 +13,10 @@ class Alice {
   AliceCore _core;
   AliceHttpClientAdapter _httpClientAdapter;
   AliceHttpAdapter _httpAdapter;
-  bool showNotification;
-  bool showInspectorOnShake;
-  bool darkTheme;
 
-  Alice(
-      {this.showNotification = true,
-      GlobalKey<NavigatorState> navigatorKey,
-      this.showInspectorOnShake = false,
-      this.darkTheme = false}) {
+  Alice({GlobalKey<NavigatorState> navigatorKey}) {
     _navigatorKey = navigatorKey ?? GlobalKey<NavigatorState>();
-    _core = AliceCore(
-        _navigatorKey, showNotification, showInspectorOnShake, darkTheme);
+    _core = AliceCore(_navigatorKey);
     _httpClientAdapter = AliceHttpClientAdapter(_core);
     _httpAdapter = AliceHttpAdapter(_core);
   }
@@ -54,10 +45,6 @@ class Alice {
 
   void showInspector() {
     _core.navigateToCallListScreen();
-  }
-
-  List getChopperInterceptor() {
-    return new List()..add(AliceChopperInterceptor(_core));
   }
 
   Widget buildInspector() {

@@ -26,23 +26,21 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
 
   @override
   void initState() {
+    _pageController = PageController(initialPage: currentSegment);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-        data: ThemeData(
-          brightness: widget.core.brightness,
-        ),
-        child: StreamBuilder<AliceHttpCall>(
+    return StreamBuilder<AliceHttpCall>(
             stream: widget.core.callUpdateSubject,
             initialData: widget.call,
             builder: (context, callSnapshot) {
               if (widget.call.id == callSnapshot.data.id) {
                 _previousState = Scaffold(
                   appBar: AppBar(
-                    title: Text('Alice - Details'),
+                    title: Text('Details'),
+                    centerTitle: false,
                     actions: [IconButton(
                       key: Key('share_key'),
                       padding: EdgeInsets.zero,
@@ -67,19 +65,18 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
                 );
               }
               return _previousState;
-            }));
+            }
+            );
   }
 
   static const List<Icon> items = [
     Icon(Icons.leaderboard, size: 29),
-    Icon(Icons.calendar_today, size: 27),
-    Icon(Icons.home, size: 31),
-    Icon(Icons.navigation, size: 29),
-    Icon(Icons.settings, size: 29)
+    Icon(Icons.security, size: 27),
+    Icon(Icons.details, size: 31),
+    Icon(Icons.error, size: 29),
   ];
 
   Widget _buildItem(int idx, Icon item, bool isSelected) {
-    bool isDarkMode = widget.core.brightness == Brightness.dark;
     final width = MediaQuery.of(context).size.width / 5;
     return AnimatedContainer(
       duration: Duration(milliseconds: 377),
@@ -88,7 +85,6 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
       width: isSelected ? width : width - 17,
       decoration: isSelected
           ? BoxDecoration(
-              color: isDarkMode ? Colors.white12 : Colors.black12,
               borderRadius: const BorderRadius.all(Radius.circular(50))
           )
           : null,

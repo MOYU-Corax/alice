@@ -1,7 +1,6 @@
 import 'package:alice/model/alice_http_call.dart';
 import 'package:alice/model/alice_http_response.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Icons, Theme;
+import 'package:flutter/material.dart';
 
 class AliceCallListItem extends StatelessWidget {
   final AliceHttpCall call;
@@ -11,9 +10,7 @@ class AliceCallListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      minSize: 0,
+    return TextButton(
       onPressed: () {
         itemClickAction(call);
       },
@@ -78,7 +75,6 @@ class AliceCallListItem extends StatelessWidget {
           ),
           Container(
             height: 1,
-            color: CupertinoColors.lightBackgroundGray,
             margin: EdgeInsets.symmetric(horizontal: 10),
           )
         ]),
@@ -97,7 +93,7 @@ class AliceCallListItem extends StatelessWidget {
     List<Widget> widgets = List();
     if (call.loading) {
       widgets.add(SizedBox(
-        child: new CupertinoActivityIndicator(),
+        child: CircularProgressIndicator(),
         width: 20,
         height: 20,
       ));
@@ -111,17 +107,17 @@ class AliceCallListItem extends StatelessWidget {
 
   Color _getStatusTextColor(BuildContext context, int status) {
     if (status == -1) {
-      return CupertinoColors.destructiveRed;
+      return Colors.red;
     } else if (status < 200) {
-      return CupertinoTheme.of(context).textTheme.textStyle.color;
+      return Theme.of(context).textTheme.bodyText1.color;
     } else if (status >= 200 && status < 300) {
-      return CupertinoColors.systemGreen;
+      return Colors.green;
     } else if (status >= 300 && status < 400) {
-      return CupertinoColors.activeOrange;
+      return Colors.orange;
     } else if (status >= 400 && status < 600) {
-      return CupertinoColors.destructiveRed;
+      return Colors.red;
     } else {
-      return CupertinoTheme.of(context).textTheme.textStyle.color;
+      return Theme.of(context).textTheme.bodyText1.color;
     }
   }
 
@@ -140,10 +136,10 @@ class AliceCallListItem extends StatelessWidget {
     Color iconColor;
     if (secure) {
       iconData = Icons.lock_outline;
-      iconColor = CupertinoColors.activeGreen;
+      iconColor = Colors.green;
     } else {
       iconData = Icons.lock_open;
-      iconColor = CupertinoColors.destructiveRed;
+      iconColor = Colors.red;
     }
     return Padding(
       padding: EdgeInsets.only(right: 3),

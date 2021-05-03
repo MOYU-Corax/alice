@@ -2,7 +2,6 @@ import 'package:alice/model/alice_menu_item.dart';
 import 'package:alice/ui/alice_call_details_screen.dart';
 import 'package:alice/core/alice_core.dart';
 import 'package:alice/model/alice_http_call.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'alice_call_list_item.dart';
@@ -28,40 +27,26 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(
-        brightness: widget._aliceCore.brightness,
-        cupertinoOverrideTheme: CupertinoThemeData(
-          brightness: widget._aliceCore.brightness,
-        ),
-      ),
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          title: Text("Alice - Calls"),
+          title: Text("Alice"),
           actions: [
             TextButton(
               child: Text('Delete'),
               onPressed: () {
-                Navigator.pop(context);
                 _removeCalls();
               },
             ),
             TextButton(
               child: Text('Stats'),
               onPressed: () {
-                Navigator.pop(context);
                 _showStatsScreen();
               },
             ),
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () => Navigator.pop(context),
-            )
           ],
         ),
         body: _getCallsList(),
-      ),
-    );
+      );
   }
 
   Widget _getCallsList() {
@@ -77,7 +62,7 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
                       children: [
                         Icon(
                           Icons.error_outline,
-                          color: CupertinoColors.activeOrange,
+                          color: Colors.orange,
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 5),
