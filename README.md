@@ -10,8 +10,8 @@
 
 Alice is an HTTP Inspector tool for Flutter which helps debugging http requests. It catches and stores http requests and responses, which can be viewed via simple UI. It is inspired from Chuck ( https://github.com/jgilfelt/chuck ).
 
+
 <p align="center">
-<img height="500" src="https://github.com/jhomlala/comptf2/blob/master/media/appsmaller.gif">
 </p>
 <table>
   <tr>
@@ -34,27 +34,6 @@ Alice is an HTTP Inspector tool for Flutter which helps debugging http requests.
        <img width="250px" src="https://raw.githubusercontent.com/jhomlala/alice/master/media/6.png">
     </td>
   </tr>
-  <tr>
-    <td>
-	<img width="250px" src="https://raw.githubusercontent.com/jhomlala/alice/master/media/7.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/jhomlala/alice/master/media/8.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/jhomlala/alice/master/media/9.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/jhomlala/alice/master/media/darktheme_1.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/jhomlala/alice/master/media/darktheme_2.png">
-    </td>
-     <td>
-       <img width="250px" src="https://raw.githubusercontent.com/jhomlala/alice/master/media/darktheme_3.png">
-    </td>
-  </tr>
-
 </table>
 
 **Suported Dart http client plugins:**
@@ -62,9 +41,9 @@ Alice is an HTTP Inspector tool for Flutter which helps debugging http requests.
 - Dio
 - HttpClient from dart:io package
 - Http from http/http package
-- Chopper
 
 **Features:**  
+✔️ Automatic dark theme  
 ✔️ Detailed logs for each HTTP calls (HTTP Request, HTTP Response)  
 ✔️ Inspector UI for viewing HTTP calls  
 ✔️ Save HTTP calls to file  
@@ -72,7 +51,7 @@ Alice is an HTTP Inspector tool for Flutter which helps debugging http requests.
 ✔️ Notification on HTTP call  
 ✔️ Support for top used HTTP clients in Dart  
 ✔️ Error handling  
-✔️ Shake to open inspector
+✔️ No useless functions
 
 ## Install
 
@@ -80,7 +59,10 @@ Alice is an HTTP Inspector tool for Flutter which helps debugging http requests.
 
 ```yaml
 dependencies:
-  alice: ^0.0.21
+  alice:
+    git:
+      url: https://github.com/CustedNG/alice.git
+      ref: master
 ```
 
 2. Install it
@@ -100,10 +82,9 @@ import 'package:alice/alice.dart';
 Create Alice instance:
 
 ```dart
-Alice alice = Alice(showNotification: true);
+Alice alice = Alice();
 ```
 
-Alice default behaviour is to show notification with http requests. You can disable it in `Alice` constructor.
 
 Add navigator key to your application:
 
@@ -115,20 +96,9 @@ You need to add this navigator key in order to show inspector UI.
 You can use also your navigator key in Alice:
 
 ```dart
-Alice alice = Alice(showNotification: true, navigatorKey: yourNavigatorKeyHere);
+Alice alice = Alice(navigatorKey: yourNavigatorKeyHere);
 ```
 
-You can set `showInspectorOnShake` in Alice constructor to open inspector by shaking your device (default disabled):
-
-```dart
-Alice alice = Alice(showNotification: true, showInspectorOnShake: true, navigatorKey: yourNavigatorKeyHere);
-```
-
-If you want to use dark mode just add `darkTheme` flag:
-
-```dart
-Alice alice = Alice(..., darkTheme: true);
-```
 
 ### HTTP Client configuration
 If you're using Dio, you just need to add interceptor.
@@ -160,13 +130,6 @@ http.get('https://jsonplaceholder.typicode.com/posts').then((response) {
 });
 ```
 
-If you're using Chopper. you need to add interceptor:
-
-```dart
-chopper = ChopperClient(
-    interceptors: alice.getChopperInterceptor(),
-);
-```
 
 To show inspector manually:
 
