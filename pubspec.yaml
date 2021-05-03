@@ -5,13 +5,13 @@ author: Jakub Homlala <jhomlala@gmail.com>
 homepage: https://github.com/jhomlala/alice
 
 environment:
-  sdk: ">=2.4.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.0+2
-  dio: ^3.0.7
+  http: ^0.13.0
+  dio: ^4.0.0
   flutter_local_notifications: ^0.9.0+1
   rxdart: ^0.23.1
   shake: ^0.1.0
