@@ -1,7 +1,6 @@
 import 'package:alice/core/alice_core.dart';
 import 'package:alice/model/alice_http_call.dart';
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
 
 import 'alice_call_error_widger.dart';
 import 'alice_call_overview_widget.dart';
@@ -41,15 +40,6 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
                   appBar: AppBar(
                     title: Text('Details'),
                     centerTitle: false,
-                    actions: [IconButton(
-                      key: Key('share_key'),
-                      padding: EdgeInsets.zero,
-                      icon: Icon(Icons.share, size: 26,),
-                      onPressed: () {
-                        Share.share(_getSharableResponseString(),
-                            subject: 'Request Details');
-                      },
-                    )],
                   ),
                   body: PageView(
                     physics: NeverScrollableScrollPhysics(),
@@ -126,9 +116,5 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
     setState(() {
       currentSegment = newValue;
     });
-  }
-
-  String _getSharableResponseString() {
-    return '${widget.call.getCallLog()}\n\n${widget.call.getCurlCommand()}';
   }
 }
